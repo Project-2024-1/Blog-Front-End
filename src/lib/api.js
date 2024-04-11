@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const HOST_API = "/api";
+export const HOST_API = "http://localhost:3000/api"; 
 
 const handelError = (error) => {
   if (error.response) {
@@ -46,7 +46,6 @@ export const getService = async (url, params) => {
   try {
     const localToken = localStorage.getItem("token");
     const sessionToken = sessionStorage.getItem("token");
-
     const headers = {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -65,15 +64,16 @@ export const getService = async (url, params) => {
         .join("&")}`;
     }
     const response = await axios.get(
-      `${HOST_API}${url}${encodeURI(queryString)}`,
+      `${url}${encodeURI(queryString)}`,
       {
         headers,
         withCredentials: true,
       }
     );
-    if (response.status >= 200 && response.status <= 210) {
-      return response.data;
-    }
+    return response.data
+    // if (response.status >= 200 && response.status <= 210) {
+    //   return response.data;
+    // }
   } catch (error) {
     throw handelError(error);
   }

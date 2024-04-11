@@ -25,7 +25,7 @@ const Navbar = () => {
           },
           {
             name: "Users 2",
-            to: "users/2",
+            to: "users/create",
             icon: (color) => <HomeIcon color={color} />,
           },
           {
@@ -85,7 +85,7 @@ const Navbar = () => {
                     className={({ isActive }) =>
                       clsx(
                         "flex items-center justify-between gap-4 py-[10.5px] px-5 hover:bg-Tbe rounded-full hover:text-Txanh text-lg",
-                        isActive ? "bg-Txanh text-Tbe" : ""
+                        isActive ? "text-Txanh" : ""
                       )
                     }
                     end
@@ -93,7 +93,7 @@ const Navbar = () => {
                     {({ isActive }) => (
                       <div className="flex items-center gap-4">
                         <span className="">
-                          {item.icon(isActive ? "#F9F7F0" : "#43EBE4")}
+                          {item.icon(isActive ? "#4A85F6" : "#000000")}
                         </span>
                         <span>{item.name}</span>
                       </div>
@@ -108,7 +108,7 @@ const Navbar = () => {
                           className={({ isActive }) =>
                             clsx(
                               "flex items-center justify-between gap-4 py-[10.5px] px-5 hover:bg-Tbe rounded-full hover:text-Txanh text-base",
-                              isActive ? "bg-Txanh rounded-full text-Tbe" : ""
+                              isActive ? "rounded-full text-Txanh" : ""
                             )
                           }
                           end
@@ -116,7 +116,7 @@ const Navbar = () => {
                           {({ isActive }) => (
                             <div className="flex items-center gap-4 pl-8">
                               <span className="">
-                                {submenu.icon(isActive ? "#F9F7F0" : "#43EBE4")}
+                                {submenu.icon(isActive ? "#4A85F6" : "#000000")}
                               </span>
                               <span>{submenu.name}</span>
                             </div>

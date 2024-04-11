@@ -8,7 +8,7 @@ const LayoutRootAdmin = () => {
     <div className="layout-admin">
       <Navbar />
       <Header />
-      <div className="main">
+      <div className="main bg-Tbe py-4 px-6">
         <Outlet />
       </div>
     </div>

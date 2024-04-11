@@ -5,8 +5,9 @@ import Products from "./products/Products";
 import Users from "./users/Users";
 import Help from "./help/Help";
 import NotFound from "../../components/core/atoms/NotFound";
-import User1 from "./users/1/1";
-import Users2 from "./users/2/2";
+import IndexUser from "./users";
+import CreateAndUpdateUser from "./users/createAndUpdate";
+
 
 const RootRouterAdmin = () => {
   return (
@@ -15,8 +16,8 @@ const RootRouterAdmin = () => {
         <Route index element={<Dashboard />} />
         <Route path="products/*" element={<Products />} />
         <Route path="users" element={<Users />}>
-          <Route index element={<User1 />} />
-          <Route path="2" element={<Users2 />} />
+          <Route index element={<IndexUser />} />
+          <Route path="create" element={<CreateAndUpdateUser />} />
         </Route>
         <Route path="help" element={<Help />} />
       </Route>
