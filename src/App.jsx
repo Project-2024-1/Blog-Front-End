@@ -1,5 +1,8 @@
+import { RouterProvider } from "react-router-dom";
+import RootRouter from "./pages/router";
+
 function App() {
-  return <div>askasdlsddsk</div>;
+  return <RouterProvider router={RootRouter} />;
 }
 
 export default App;
