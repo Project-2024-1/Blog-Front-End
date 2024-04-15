@@ -58,16 +58,18 @@ export const getService = async (url, params) => {
 
     let queryString = "";
     if (params) {
-      queryString = `?${Object.keys(params)
-        .filter((k) => !!params[k])
-        .map((key) => `${key}=${params[key] || ""}`)
-        .join("&")}`;
+      // queryString = `?${Object.keys(params)
+      //   .filter((k) => !!params[k])
+      //   .map((key) => `${key}=${params[key] || ""}`)
+      //   .join("&")}`;
+      queryString = params
     }
+    // console.log(queryString)
     const response = await axios.get(
       `${url}${encodeURI(queryString)}`,
       {
         headers,
-        withCredentials: true,
+        // withCredentials: true,
       }
     );
     return response.data

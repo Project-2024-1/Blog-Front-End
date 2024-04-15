@@ -81,8 +81,8 @@ const IndexUser = () => {
                             <div className="w-[15%]">{item.createdAt}</div>
                             <div className="w-[15%]"><StatusButton status={item.UserStatus}/></div>
                             <div className="w-[15%] flex gap-2">
-                                <div className="cursor-pointer"><EditIcon/></div>
-                                <div className="cursor-pointer"><DeleteIcon/></div>
+                                <NavLink to={`/admin/users/create?idUser=${item._id}`} className="cursor-pointer"><EditIcon/></NavLink>
+                                <NavLink className="cursor-pointer"><DeleteIcon/></NavLink>
                             </div>
                         </div>
                 ))}
