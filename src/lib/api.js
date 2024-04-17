@@ -28,16 +28,19 @@ export const postService = async (url, body, authentication = true) => {
         : {}),
     };
     axios.defaults.withCredentials = false;
-
+  console.log(body)
     const response = await axios.post(
       `${HOST_API + url}`,
       JSON.stringify(body),
       { headers }
     );
-    if (response.status >= 200 && response.status <= 210) {
-      return response.data;
-    }
+    console.log(response)
+    return response.data
+    // if (response.status >= 200 && response.status <= 210) {
+    //   return response.data;
+    // }
   } catch (error) {
+    console.log(error);
     throw handelError(error);
   }
 };

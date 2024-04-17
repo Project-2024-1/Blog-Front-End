@@ -4,59 +4,157 @@ import { useEffect, useState } from 'react';
 import NameBase from "../base/nameBase";
 import StatusButton from '../base/statusButton';
 import { getService } from '../../../lib/api';
+import ImageBase from '../base/imageBase';
+import axios from 'axios';
 
 
 const CreateAndUpdateUser = () => {
     const location = useLocation();
-    const [users, setUsers] = useState([]);
-    let paramValue = "";
+    const [users, setUsers] = useState({
+        id: '',
+        UserName: '',
+        UserEmail: '',
+        UserDescription: '',
+        UserAvatar: '',
+        UserRole: [],
+        UserStatus: 1,
 
-    useEffect(() => {
-      const queryParams = new URLSearchParams(location.search);
-       paramValue = queryParams.get('idUser');
-      console.log(paramValue); // In ra giá trị của query param
-    }, [location]);
+    });
+    const [permission, setPermission] = useState([]);
+    const [selectedPermissions, setSelectedPermissions] = useState([]);
 
+    const [imageUrlFromChild, setImageUrlFromChild] = useState('');
 
+    const queryParams = new URLSearchParams(location.search);
+    let paramValue = queryParams.get('idUser');
+     // Hàm callback để nhận imageUrl từ ImageBase
+     const handleImageUrlChange = (imageUrl) => {
+        setUsers({ ...users, UserAvatar: imageUrl });
+        setImageUrlFromChild(imageUrl);
+    };
+    // sự kiện onchange của input 
+    const handleChange = (e) => {
+            const { name, value } = e.target;
+            setUsers({ ...users, [name]: value });
+        };
+
+        // effect gọi api lấy dữ liệu Role và User
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const result = await getService("http://localhost:3000/api/user?", `idUser=${paramValue}`);
-                setUsers(result.users);
-                console.log(result)
+
+                const [userData, roleData] = await Promise.all([
+                    getService(`http://localhost:3000/api/user?`, `idUser=${paramValue}`),
+                    getService(`http://localhost:3000/api/role`, ``)
+                ]);
+
+                setUsers(userData.users);
+                setPermission(roleData.roles);
+
+                if (userData && userData.users && userData.users.UserRole) {
+                    const selectedIds = userData.users.UserRole.map(role => role);
+                    setSelectedPermissions(selectedIds);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [location, paramValue]);
+
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+            // Nếu cần thêm các header khác, bạn có thể thêm vào đây
+        },
+    };
+    // API thêm mới User hoặc sửa User
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            console.log(paramValue)
+            if(paramValue === "" || paramValue === null) {
+                const response = await axios.post('http://localhost:3000/api/user/addUser', users, config);
+                console.log(response)
+            } else {
+                setUsers({... users, id: paramValue});
+                const response = await axios.patch('http://localhost:3000/api/user/updateUser', users, config);
+                console.log(response)
+            }
+            // console.log('Data added:', response.data);
+            // Thêm logic xử lý sau khi thêm dữ liệu thành công
+        } catch (error) {
+            console.log(error)
+            console.error('Error adding data:', error);
+        }
+    };
+
+    // hàm kiểm tra quyền của user với danh sách role
+    const handlePermissionChange = (roleId) => {
+        let updatedPermissions = [...selectedPermissions];
+        if (updatedPermissions.includes(roleId)) {
+            updatedPermissions = updatedPermissions.filter(id => id !== roleId);
+        } else {
+            updatedPermissions.push(roleId);
+        }
+        setSelectedPermissions(updatedPermissions);
+
+        // lấy danh sách quyền ban đầu
+        let userRoleOld = [... users.UserRole];
+        if (userRoleOld.includes(roleId)) {
+            userRoleOld = userRoleOld.filter(id => id !== roleId);
+        } else {
+            userRoleOld.push(roleId);
+        }
+        setUsers({ ...users, UserRole: userRoleOld });
+    };
+
     return <div>
         <NameBase name={paramValue === null || paramValue === "" ? "Create User" : "Update User"}/>
-        <form className='flex gap-2 flex-col'>
+        <form className='flex gap-2 flex-col' onSubmit={handleSubmit}>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Tên người dùng</label>
-                <input className='w-[600px] p-3' type="text" placeholder='Enter your name' value={users.UserName || ""}/>
+                <input
+                 className='w-[600px] p-3 border-none outline-none' 
+                 type="text" 
+                 name='UserName'
+                 placeholder='Enter your name' 
+                 value={users.UserName || ""}
+                 onChange={handleChange}
+                />
             </div>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Mật khẩu</label>
-                <input className='w-[600px] p-3' type="password" readOnly/>
+                <input 
+                    className='w-[600px] p-3 border-none outline-none'
+                    name='UserPassword'
+                    type="password" 
+                    readOnly
+                />
             </div>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Email</label>
-                <input className='w-[600px] p-3' type="email" placeholder='Enter your email' value={users.UserEmail || ""}/>
+                <input 
+                    className='w-[600px] p-3 border-none outline-none' 
+                    type="email" 
+                    name='UserEmail'
+                    placeholder='Enter your email' 
+                    value={users.UserEmail || ""}
+                    onChange={handleChange}
+                />
             </div>
-           
-            <div className='flex gap-2 items-center'>
-                <label className='w-[200px]' htmlFor="name">Ảnh đại diện</label>
-                <div>
-                <img className='w-[200px]' src={users.UserAvatar || ""} alt="" />
-            </div>
-                <input type="file" placeholder='Enter your avatar'/>
-            </div>
+            <ImageBase name="Avatar" data={users.UserAvatar} dataName="UserAvatar" onImageUrlChange={handleImageUrlChange}/>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Mô tả</label>
-                <textarea className='w-[600px] p-3' type="text" placeholder='Enter your Description' value={users.UserDescription || ""}/>
+                <textarea 
+                    className='w-[600px] p-3 border-none outline-none' 
+                    type="text" 
+                    name='UserDescription'
+                    placeholder='Enter your Description' 
+                    value={users.UserDescription || ""}
+                    onChange={handleChange}
+                />
             </div>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Trạng thái</label>
@@ -65,26 +163,16 @@ const CreateAndUpdateUser = () => {
             <div className='flex gap-2 flex-col'>
                 <div className='font-bold'>Box Permission</div>
                 <div className='flex gap-3 flex-wrap'>
-                    <div className='w-[calc((100%-36px)/4)]'>
-                        <input type="checkbox" />
-                        <span>Permission 1</span>
-                    </div>
-                    <div className='w-[calc((100%-36px)/4)]'>
-                        <input type="checkbox" />
-                        <span>Permission 2</span>
-                    </div>
-                    <div className='w-[calc((100%-36px)/4)]'>
-                        <input type="checkbox" />
-                        <span>Permission 3</span>
-                    </div>
-                    <div className='w-[calc((100%-36px)/4)]'>
-                        <input type="checkbox" />
-                        <span>Permission 4</span>
-                    </div>
-                    <div className='w-[calc((100%-36px)/4)]'>
-                        <input type="checkbox" />
-                        <span>Permission 5</span>
-                    </div>
+                 {permission.map((item, index) => (
+                     <div key={item._id} className='w-[calc((100%-36px)/4)]'>
+                     <input type="checkbox"
+                      checked={selectedPermissions.includes(item._id)}
+                      onChange={() => handlePermissionChange(item._id)}
+                     />
+                        <span>{item.RoleName}</span>
+                     </div>
+                      ))
+                    }                   
                 </div>
             </div>
             <button type='submit' className='bg-Txanh text-Twhite p-3 rounded-3xl'>
