@@ -22,7 +22,7 @@ const IndexUser = () => {
 
         fetchData();
     }, []);
-    console.log(dataUser)
+    // console.log(dataUser)
     return <div>
         <NameBase name='User Dashboard'/>
         <div className="flex w-full items-center gap-3 my-4">

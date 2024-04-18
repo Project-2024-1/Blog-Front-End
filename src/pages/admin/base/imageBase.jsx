@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const ImageBase = ({ name, data, dataName, onImageUrlChange }) => {
+const ImageBase = ({ name, data, dataName, onImageUrlChange, folderImage }) => {
     const [imageUrl, setImageUrl] = useState(data);
     const [newImageUrl, setNewImageUrl] = useState('');
 
@@ -39,10 +39,21 @@ const ImageBase = ({ name, data, dataName, onImageUrlChange }) => {
 
 const handleDeleteImage = async (e) => {
     try {
-        let imageName = 
-        const response = await axios.delete(`http://localhost:3000/api/image/deleteImage/${data}`);
+       // Trích xuất tên ảnh từ URL sử dụng biểu thức chính quy
+       const imageUrlNow = imageUrl; // imageUrl ở đây là biến chứa URL ảnh
+
+       // Sử dụng biểu thức chính quy để lấy tên ảnh từ URL
+       const imageName = imageUrlNow.match(/\/([^/]+)\.([^/]+)\/?$/)[1];
+        let response = await axios.delete(`http://localhost:3000/api/image/deleteImage?nameImage=${folderImage}/${imageName}`);
+        // let response = await axios.delete(`http://localhost:3000/api/image/deleteImage?nameImage=${folderImage}/${imageName}`);
         console.log(response)
+        
+        if(response.data.statusCode === 17) {
+            setImageUrl('');
+            alert(response.data.UserMsg)
+        }
     } catch(error) {
+        alert(response.data.UserMsg)
         console.error('Error deleting image:', error);
     }
 }

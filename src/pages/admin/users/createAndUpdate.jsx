@@ -13,6 +13,7 @@ const CreateAndUpdateUser = () => {
     const [users, setUsers] = useState({
         id: '',
         UserName: '',
+        UserPassword: '',
         UserEmail: '',
         UserDescription: '',
         UserAvatar: '',
@@ -39,29 +40,61 @@ const CreateAndUpdateUser = () => {
         };
 
         // effect gọi api lấy dữ liệu Role và User
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             if(paramValue){
+    //                 const [userData, roleData] = await Promise.all([
+    //                     getService(`http://localhost:3000/api/user?`, `idUser=${paramValue}`),
+    //                     getService(`http://localhost:3000/api/role`, ``)
+    //                 ]);
+    
+    //                 setUsers(userData.users);
+    //                 setPermission(roleData.roles);
+    
+    //                 if (userData && userData.users && userData.users.UserRole) {
+    //                     const selectedIds = userData.users.UserRole.map(role => role);
+    //                     setSelectedPermissions(selectedIds);
+    //                 }
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, [location, paramValue]);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-
-                const [userData, roleData] = await Promise.all([
-                    getService(`http://localhost:3000/api/user?`, `idUser=${paramValue}`),
-                    getService(`http://localhost:3000/api/role`, ``)
-                ]);
-
-                setUsers(userData.users);
-                setPermission(roleData.roles);
-
-                if (userData && userData.users && userData.users.UserRole) {
-                    const selectedIds = userData.users.UserRole.map(role => role);
-                    setSelectedPermissions(selectedIds);
+                if (paramValue) {
+                    const userData = await getService(`http://localhost:3000/api/user?`, `idUser=${paramValue}`);
+                    setUsers(userData.users);
+    
+                    if (userData && userData.users && userData.users.UserRole) {
+                        const selectedIds = userData.users.UserRole.map(role => role);
+                        setSelectedPermissions(selectedIds);
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
-
-        fetchData();
-    }, [location, paramValue]);
+    
+        const fetchRoleData = async () => {
+            try {
+                const roleData = await getService(`http://localhost:3000/api/role`, ``);
+                setPermission(roleData.roles);
+            } catch (error) {
+                console.error('Error fetching role data:', error);
+            }
+        };
+    
+        fetchData(); // Gọi fetchData nếu paramValue có giá trị
+        fetchRoleData(); // Luôn gọi fetchRoleData để lấy dữ liệu role
+    }, []); // Không có dependency để đảm bảo useEffect chạy mỗi khi component được render
+    
 
     const config = {
         headers: {
@@ -73,14 +106,14 @@ const CreateAndUpdateUser = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(paramValue)
+            // console.log(paramValue)
             if(paramValue === "" || paramValue === null) {
                 const response = await axios.post('http://localhost:3000/api/user/addUser', users, config);
-                console.log(response)
+                // console.log(response)
             } else {
                 setUsers({... users, id: paramValue});
                 const response = await axios.patch('http://localhost:3000/api/user/updateUser', users, config);
-                console.log(response)
+                // console.log(response)
             }
             // console.log('Data added:', response.data);
             // Thêm logic xử lý sau khi thêm dữ liệu thành công
@@ -130,7 +163,9 @@ const CreateAndUpdateUser = () => {
                     className='w-[600px] p-3 border-none outline-none'
                     name='UserPassword'
                     type="password" 
-                    readOnly
+                    value={users.UserPassword || ""}
+                    onChange={handleChange}
+                    readOnly={paramValue !== null && paramValue !== ""}
                 />
             </div>
             <div className='flex gap-2 items-center'>
@@ -144,7 +179,7 @@ const CreateAndUpdateUser = () => {
                     onChange={handleChange}
                 />
             </div>
-            <ImageBase name="Avatar" data={users.UserAvatar} dataName="UserAvatar" onImageUrlChange={handleImageUrlChange}/>
+            <ImageBase name="Avatar" data={users.UserAvatar} dataName="UserAvatar" onImageUrlChange={handleImageUrlChange} folderImage={"users"}/>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Mô tả</label>
                 <textarea 
