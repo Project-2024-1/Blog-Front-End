@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import LayoutRootDisplay from "../../components/layouts/display/LayoutRootDisplay";
+import LayoutRootDisplay from "@src/components/layouts/display/LayoutRootDisplay";
 import HomePage from "./home/HomePage";
 
 const RootRouterDisplay = () => {

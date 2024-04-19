@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import LayoutRootAdmin from "../../components/layouts/admin/LayoutRootAdmin";
+import LayoutRootAdmin from "@src/components/layouts/admin/LayoutRootAdmin";
+import NotFound from "@src/components/core/atoms/NotFound";
 import Dashboard from "./dashboard/Dashboard";
 import Products from "./products/Products";
 import Users from "./users/Users";
 import Help from "./help/Help";
-import NotFound from "../../components/core/atoms/NotFound";
 import User1 from "./users/1/1";
 import Users2 from "./users/2/2";
 

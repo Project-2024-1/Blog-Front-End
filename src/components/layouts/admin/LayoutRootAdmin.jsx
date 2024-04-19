@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Navbar from "./Navbar";
-import "../../../assets/style/admin.css";
+import "@src/assets/style/admin.css";
 
 const LayoutRootAdmin = () => {
   return (
