@@ -7,16 +7,14 @@ import Help from "./help/Help";
 import NotFound from "../../components/core/atoms/NotFound";
 import IndexUser from "./users";
 import CreateAndUpdateUser from "./users/createAndUpdate";
-import Login from "./login/Login";
-import LoginLayout from "./login/LoginLayout";
 
 
 const RootRouterAdmin = () => {
   return (
     <Routes>
-      <Route exact path="login" element={<LoginLayout />}>
+      {/* <Route exact path="login" element={<LoginLayout />}>
         <Route index element={<Login />} />
-      </Route>
+      </Route> */}
       <Route exact path="/" element={<LayoutRootAdmin />}>
         <Route index element={<Dashboard />} />
         <Route path="products/*" element={<Products />} />

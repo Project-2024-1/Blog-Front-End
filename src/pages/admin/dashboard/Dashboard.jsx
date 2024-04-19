@@ -10,7 +10,7 @@ const Dashboard = () => {
     const fetchData = async () => {
         try {
             const result = await getService("http://localhost:3000/api/log", "");
-            if (checkErrorStatus(response)) {
+            if (checkErrorStatus(result)) {
               // Nếu là mã lỗi 403 hoặc 401, chuyển hướng đến trang đăng nhập
               window.location.href = '/login'; // hoặc sử dụng navigate từ react-router-dom
               return;

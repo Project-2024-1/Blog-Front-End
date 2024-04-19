@@ -14,6 +14,18 @@ const handelError = (error) => {
   throw JSON.stringify(error);
 };
 
+export const signUpApi = async (body) => {
+  try {
+    const response = await axios.post(`${HOST_API}/auth/signin`, body);
+    if (response.status >= 200 && response.status <= 210) {
+      return response.data;
+    }
+  } catch (error) {
+    // throw handelError(error);
+    return error.response.data;
+  }
+};
+
 export const postService = async (url, body, authentication = true) => {
   try {
     const localToken = localStorage.getItem("token");
@@ -48,6 +60,7 @@ export const postService = async (url, body, authentication = true) => {
 export const getService = async (url, params) => {
   try {
     const localToken = localStorage.getItem("token");
+    
     const sessionToken = sessionStorage.getItem("token");
     const headers = {
       Accept: "application/json",
@@ -58,7 +71,7 @@ export const getService = async (url, params) => {
           }
         : {}),
     };
-
+    console.log(headers)
     let queryString = "";
     if (params) {
       // queryString = `?${Object.keys(params)
@@ -80,6 +93,7 @@ export const getService = async (url, params) => {
     //   return response.data;
     // }
   } catch (error) {
+    console.log(error);
     throw handelError(error);
   }
 };
