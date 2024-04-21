@@ -19,7 +19,8 @@ const Login = () => {
      const response = await signUpApi(newData);
      console.log(response);
      if(response.statusCode === 1) {
-      localStorage.setItem("token", response.AccessToken);
+      localStorage.setItem("accessToken", response.AccessToken);
+      localStorage.setItem("refreshToken", response.RefreshToken);
       toast.success(response.UserMsg);
       navigate("/admin");
      } else {
