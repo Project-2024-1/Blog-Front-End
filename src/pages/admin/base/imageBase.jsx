@@ -4,10 +4,11 @@ import axios from "axios";
 const ImageBase = ({ name, data, dataName, onImageUrlChange, folderImage }) => {
     const [imageUrl, setImageUrl] = useState(data);
     const [newImageUrl, setNewImageUrl] = useState('');
-
+    console.log(data)
     useEffect(() => {
         if (newImageUrl !== '') { // Kiểm tra newImageUrl đã được thiết lập chưa
             setImageUrl(newImageUrl);
+           
             onImageUrlChange(newImageUrl);
         } else if (data !== imageUrl) { // Kiểm tra data mới và imageUrl có khác nhau không
             setImageUrl(data);
