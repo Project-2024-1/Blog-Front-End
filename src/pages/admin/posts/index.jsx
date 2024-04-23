@@ -32,8 +32,8 @@ const PostsIndex = () => {
               </button>
               <input className="w-[calc(100%-28px)] border-none outline-none" type="text" placeholder="Search" required/>
           </form>
-          <NavLink to={"/admin/users/create"} className="w-[10%] bg-Txanh text-Twhite rounded-lg flex items-center justify-center py-3 text-xl font-bold cursor-pointer">
-              Add User+
+          <NavLink to={"/admin/posts/create"} className="w-[10%] bg-Txanh text-Twhite rounded-lg flex items-center justify-center py-3 text-xl font-bold cursor-pointer">
+              Add Post+
           </NavLink>
           <div className="w-[10%]  text-Tblack rounded-lg flex items-center justify-center py-3 text-xl font-bold">
               <select className=" bg-Tbe cursor-pointer w-full border-none outline-none text-center">

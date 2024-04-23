@@ -35,8 +35,8 @@ const MyEditor = ({onContentChange, contentOld}) => {
         apiKey={`lxm8cy4jc57hcmxw5dc0o5xaf8bbk6ig7t1dcqnys1s4rnvr`}
         init={{
           height: 600,
-          plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+          plugins: 'anchor autolink charmap codesample code emoticons image link lists media searchreplace table visualblocks wordcount linkchecker autoconvert',
+          toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat | codesample code',
           images_upload_base_path: `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
           images_upload_credentials: true,
           file_picker_types: 'image',
@@ -74,25 +74,25 @@ const MyEditor = ({onContentChange, contentOld}) => {
 
             input.click();
           },
-          setup: (editor) => {
-            // Add CloudinaryFileManagerButton to the toolbar
-            editor.ui.registry.addButton('cloudinaryFileManagerButton', {
-              text: 'Cloudinary FileManager',
-              icon:'../assets/react.svg',
-              onAction: () => {
-                setIsFileManagerVisible(true);
-                // Execute mceCloudinaryFileManager command when the button is clicked
-                editor.execCommand('mceCloudinaryFileManager');
-              },
-            });
+          // setup: (editor) => {
+          //   // Add CloudinaryFileManagerButton to the toolbar
+          //   editor.ui.registry.addButton('cloudinaryFileManagerButton', {
+          //     text: 'Cloudinary FileManager',
+          //     icon:'../assets/react.svg',
+          //     onAction: () => {
+          //       setIsFileManagerVisible(true);
+          //       // Execute mceCloudinaryFileManager command when the button is clicked
+          //       editor.execCommand('mceCloudinaryFileManager');
+          //     },
+          //   });
 
-            // Define mceCloudinaryFileManager command
-            editor.addCommand('mceCloudinaryFileManager', () => {
-              // Do something when Cloudinary FileManager is opened
-              // You can call a function in CloudinaryFileManagerPlugin to show the FileManager
-            //   CloudinaryFileManagerPlugin.show();
-            });
-          },
+          //   // Define mceCloudinaryFileManager command
+          //   editor.addCommand('mceCloudinaryFileManager', () => {
+          //     // Do something when Cloudinary FileManager is opened
+          //     // You can call a function in CloudinaryFileManagerPlugin to show the FileManager
+          //   //   CloudinaryFileManagerPlugin.show();
+          //   });
+          // },
         }}
         onEditorChange={handleEditorChange}
         value={contentOld}

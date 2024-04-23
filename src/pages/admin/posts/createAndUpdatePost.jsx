@@ -9,6 +9,7 @@ import axios from 'axios';
 import Posts from './Posts';
 import MyEditor from '../base/myEditor';
 import MyCKEditor from '../base/editor2';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
 const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
@@ -39,7 +40,7 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
     let paramValue = queryParams.get('idPost');
      // Hàm callback để nhận imageUrl từ ImageBase
      const handleImageUrlChange = (imageUrl) => {
-        setUsers({ ...posts, PostImage: imageUrl });
+        setPosts({ ...posts, PostImage: imageUrl });
         setImageUrlFromChild(imageUrl);
     };
     // sự kiện onchange của input 
@@ -80,12 +81,13 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
         try {
             // console.log(paramValue)
             if(paramValue === "" || paramValue === null) {
-                const response = await axios.post('http://localhost:3000/api/user/addPost', posts, config);
-                // console.log(response)
+                const response = await axios.post('http://localhost:3000/api/post/addPost', posts, config);
+                console.log(response)
             } else {
-                setUsers({... posts, id: paramValue});
-                const response = await axios.patch('http://localhost:3000/api/user/updatePost', posts, config);
-                // console.log(response)
+                setPosts({... posts, id: paramValue});
+                
+                const response = await axios.patch('http://localhost:3000/api/post/updatePost', posts, config);
+                 console.log(posts)
             }
             // console.log('Data added:', response.data);
             // Thêm logic xử lý sau khi thêm dữ liệu thành công
@@ -95,11 +97,12 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
         }
     };
 
-    const ckConfig = {
-        cloudServices: {
-          tokenUrl: `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-          uploadUrl: `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-        },
+    const handleEditorContentChange = (newContent) => {
+        // Cập nhật trạng thái formData nếu cần:
+        setPosts({
+            ...posts,
+            PostContent: newContent,
+          });
       };
 
     useEffect(() => {
@@ -134,7 +137,7 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
                     type="text" 
                     value={posts.PostDescription || ""}
                     onChange={handleChange}
-                    readOnly={paramValue !== null && paramValue !== ""}
+                    // readOnly={paramValue !== null && paramValue !== ""}
                 />
             </div>
             <div className='flex gap-2 items-center'>
@@ -151,21 +154,7 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
             <ImageBase name="Avatar" data={posts.PostImage} dataName="PostImage" onImageUrlChange={handleImageUrlChange} folderImage={"posts"}/>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Content</label>
-                {/* <MyEditor onContentChange={(newContent) => handleEditorContentChange(newContent)} contentOld={posts.PostContent}/> */}
-                <MyCKEditor
-                    editor={ClassicEditor}
-                    data={content}
-                    onChange={handleEditorChange}
-                    config={ckConfig}
-                    />
-                {/* <textarea 
-                    className='w-[600px] p-3 border-none outline-none' 
-                    type="text" 
-                    name='UserDescription'
-                    placeholder='Enter your Description' 
-                    value={posts.PostContent || ""}
-                    onChange={handleChange}
-                /> */}
+                <MyEditor onContentChange={(newContent) => handleEditorContentChange(newContent)} contentOld={posts.PostContent}/> 
             </div>
             <div className='flex gap-2 items-center'>
                 <label className='w-[200px]' htmlFor="name">Trạng thái</label>
