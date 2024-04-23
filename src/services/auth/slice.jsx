@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { accountApi, signInApi } from './api';
-import jwt_decode from 'jwt-decode';
+// import jwt_decode from 'jwt-decode';
 import { toast } from 'react-toastify';
 const initialState = {
   loading: false,
@@ -79,12 +79,12 @@ export const authSlice = createSlice({
           ? localStorage.getItem('token') || ''
           : sessionStorage.getItem('token') || '';
       try {
-        const decoded = jwt_decode(state.id_token);
-        if (!decoded) {
-          state.isAuth = false;
-        } else {
-          state.isAuth = true;
-        }
+        // const decoded = jwt_decode(state.id_token);
+        // if (!decoded) {
+        //   state.isAuth = false;
+        // } else {
+        //   state.isAuth = true;
+        // }
       } catch (error) {
         state.isAuth = false;
       }

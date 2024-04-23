@@ -1,8 +1,8 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
 const Products = () => {
   return (
-    <div>
+    <div className="pr-5">
       <Outlet />
     </div>
   );
