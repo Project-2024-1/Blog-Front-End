@@ -5,7 +5,7 @@ import Dashboard from './dashboard/Dashboard';
 import Products from './products/Products';
 import Users from './users/Users';
 import Help from './help/Help';
-import Users2 from './users/2/2';
+import Users2 from './users/add-or-update/AddOrUpdateUser';
 import TableListUser from './users/list-user/ListUser';
 import TableListProduct from './products/list-products/ListProducts';
 
