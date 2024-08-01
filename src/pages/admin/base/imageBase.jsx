@@ -4,7 +4,7 @@ import axios from "axios";
 const ImageBase = ({ name, data, dataName, onImageUrlChange, folderImage }) => {
     const [imageUrl, setImageUrl] = useState(data);
     const [newImageUrl, setNewImageUrl] = useState('');
-    console.log(data)
+    // console.log(data)
     useEffect(() => {
         if (newImageUrl !== '') { // Kiểm tra newImageUrl đã được thiết lập chưa
             setImageUrl(newImageUrl);
@@ -17,6 +17,10 @@ const ImageBase = ({ name, data, dataName, onImageUrlChange, folderImage }) => {
 
     const handleChange = async (e) => {
         const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('PostImage', file);
+        formData.append('folderName', folderImage);
+        console.log('file image',file)
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -24,11 +28,12 @@ const ImageBase = ({ name, data, dataName, onImageUrlChange, folderImage }) => {
             },
         };
         try {
-            const response = await axios.post('http://localhost:3000/api/image/addImage', {image: file, folderName: "users"}, 
+            const response = await axios.post('http://localhost:33655/v1/api/upload/post/thumb', formData, 
             config
         );
-            console.log(response)
-            const imageUrl = response.data.url;
+            
+            const imageUrl = response.data.metadata.image_url;
+            console.log(imageUrl)
             setNewImageUrl(imageUrl);
 
             onImageUrlChange(imageUrl);

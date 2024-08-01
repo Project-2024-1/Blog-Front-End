@@ -9,6 +9,9 @@ import IndexUser from "./users";
 import CreateAndUpdateUser from "./users/createAndUpdate";
 import CreateAndUpdatePost from "./posts/createAndUpdatePost";
 import PostsIndex from "./posts";
+import Categories from "./category/category";
+import CategoryIndex from "./category";
+import CreateAndUpdateCategory from "./category/createAndUpdateCategory";
 
 
 const RootRouterAdmin = () => {
@@ -23,6 +26,10 @@ const RootRouterAdmin = () => {
         <Route path="users" element={<Users />}>
           <Route index element={<IndexUser />} />
           <Route path="create" element={<CreateAndUpdateUser />} />
+        </Route>
+        <Route path="category" element={<Categories />}>
+          <Route index element={<CategoryIndex />} />
+          <Route path="create" element={<CreateAndUpdateCategory />} />
         </Route>
         <Route path="help" element={<Help />} />
       </Route>

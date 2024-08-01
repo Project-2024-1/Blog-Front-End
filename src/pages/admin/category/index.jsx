@@ -6,15 +6,15 @@ import StatusButton from "../base/statusButton";
 import { getService } from "../../../lib/api";
 import formatDate from "../base/formatDate";
 
-const PostsIndex = () => {
-  const [dataPost, setDataPost] = useState([]);
+const CategoryIndex = () => {
+  const [dataCategory, setDataCategory] = useState([]);
 
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const result = await getService("http://localhost:33655/v1/api/post", "");
+              const result = await getService("http://localhost:33655/v1/api/category", "");
               console.log(result)
-              setDataPost(result.metadata);
+              setDataCategory(result.metadata);
           } catch (error) {
               console.error('Error fetching data:', error);
           }
@@ -59,28 +59,28 @@ const PostsIndex = () => {
                       <div className="w-[15%] ">
                           <div>Ảnh</div>
                       </div>
-                      <div className="w-[10%]">
+                      {/* <div className="w-[10%]">
                           Total view
-                      </div>
+                      </div> */}
                       <div className="w-[15%]">Create Date</div>
-                      <div className="w-[15%]">Status</div>
+                      {/* <div className="w-[15%]">Status</div> */}
                       <div className="w-[15%]">Action</div>
               </div>
-              {dataPost && dataPost.map((item, index) => (
+              {dataCategory && dataCategory.map((item, index) => (
                   <div key={item._id} className="flex w-full items-center gap-3 my-4">
                           <div className="w-[30%] flex flex-col gap-2 items-center">
-                              <div className="font-bold">{item.PostTitle}</div>
+                              <div className="font-bold">{item.cate_name}</div>
                           </div>
                           <div className="w-[15%]">
-                              <img src={item.PostImage} alt="" />
+                              <img src={item.cate_image} alt="" />
                           </div>
-                          <div className="w-[10%] flex justify-center">
+                          {/* <div className="w-[10%] flex justify-center">
                               {item.PostTotalView}
-                          </div>
+                          </div> */}
                           <div className="w-[15%] flex justify-center">{formatDate(item.createdAt)}</div>
-                          <div className="w-[15%] flex justify-center"><StatusButton status={item.PostStatus}/></div>
+                          {/* <div className="w-[15%] flex justify-center"><StatusButton status={item.PostStatus}/></div> */}
                           <div className="w-[15%] flex gap-2 justify-center">
-                              <NavLink to={`/admin/posts/create?idPost=${item._id}`} className="cursor-pointer"><EditIcon/></NavLink>
+                              <NavLink to={`/admin/category/create?idPost=${item._id}`} className="cursor-pointer"><EditIcon/></NavLink>
                               <NavLink className="cursor-pointer"><DeleteIcon/></NavLink>
                           </div>
                       </div>
@@ -91,4 +91,4 @@ const PostsIndex = () => {
 };
 
 
-export default PostsIndex;
+export default CategoryIndex;
