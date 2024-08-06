@@ -32,7 +32,7 @@ const MyEditor = ({onContentChange, contentOld}) => {
   return (
     <div className='box_tiny'>
       <Editor
-        apiKey={`lxm8cy4jc57hcmxw5dc0o5xaf8bbk6ig7t1dcqnys1s4rnvr`}
+        apiKey='lxm8cy4jc57hcmxw5dc0o5xaf8bbk6ig7t1dcqnys1s4rnvr'
         init={{
           height: 600,
           plugins: 'anchor autolink charmap codesample code emoticons image link lists media searchreplace table visualblocks wordcount linkchecker autoconvert',

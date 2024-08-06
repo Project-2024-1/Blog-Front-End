@@ -69,8 +69,8 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
             try {
                 if (paramValue) {
                     const postData = await getService(`http://localhost:33655/v1/api/post?`, `idPost=${paramValue}`);
-                    console.log(postData)
-                    setPosts(postData.metadata);
+                    console.log('post by ID',postData)
+                    setPosts(postData.metadata[0]);
                     setSelectedCategories(postData.metadata.categories || []);
                 }
             } catch (error) {
@@ -111,12 +111,13 @@ const CreateAndUpdatePost = ({ onContentChange, contentOld }) => {
             // console.log(paramValue)
             if(paramValue === "" || paramValue === null) {
                 console.log(posts)
-                // const response = await axios.post('http://localhost:33655/v1/api/post', posts, config);
-                // console.log(response)
+                const response = await axios.post('http://localhost:33655/v1/api/post', posts, config);
+                console.log(response)
             } else {
                 setPosts({... posts, id: paramValue});
                 
-                const response = await axios.patch('http://localhost:33655/api/post', posts, config);
+                const response = await axios.put('http://localhost:33655/v1/api/post', posts, config);
+                console.log(response)
                  console.log(posts)
             }
             // console.log('Data added:', response.data);
